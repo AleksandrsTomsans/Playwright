@@ -1,0 +1,29 @@
+plugins {
+	id 'java'
+}
+
+group = 'org.example'
+version = '1.0-SNAPSHOT'
+
+java {
+	toolchain {
+		languageVersion = JavaLanguageVersion.of(11)
+	}
+}
+
+repositories {
+	mavenCentral()
+}
+
+dependencies {
+	// Playwright (must NOT be test-only)
+	implementation 'com.microsoft.playwright:playwright:1.41.2'
+
+	// JUnit 5
+	testImplementation 'org.junit.jupiter:junit-jupiter:5.10.1'
+}
+
+test {
+	useJUnitPlatform()
+}
+
