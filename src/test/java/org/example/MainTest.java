@@ -21,6 +21,7 @@ private static Page page;
 
 @BeforeEach
 void setUp() {
+     
      playwright = Playwright.create();
      browser = playwright.chromium().launch(
                new BrowserType.LaunchOptions().setHeadless(false));
@@ -130,6 +131,7 @@ public static void pressItems(Page page2, String locator, int itemsPerPage)
                     //println("");
                     
                     press(page2, locator+"["+i+"]");
+                    itemPage();
                     page2.goBack();
                     flake = false;
                     
@@ -160,7 +162,10 @@ public static void pressItems(Page page2, String locator, int itemsPerPage)
           
 }
           
-     
+public static void itemPage(){
+     // Write program to use PLD with this framework
+}
+
      
      
      
