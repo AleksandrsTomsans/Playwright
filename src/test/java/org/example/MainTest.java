@@ -58,107 +58,107 @@ void tearDown() {
      playwright.close();
 }
      
-     public static void nextPage (Page page1)
+public static void nextPage (Page page1)
+{
+     int pageNumber = 1;
+     boolean nextPageArrow = true;
+     
+     
+     while ( nextPageArrow )
      {
-          int pageNumber = 1;
-          boolean nextPageArrow = true;
+          var totalItemsPerPage = elementsSumAndReloadIfMore(page1, "xpath="+xpath.PRODUCT, 12 );
           
           
-          while ( nextPageArrow )
+          pressItems(page1, xpath.PRODUCT, totalItemsPerPage);
+          
+          try
           {
-               var totalItemsPerPage = elementsSumAndReloadIfMore(page1, "xpath="+xpath.PRODUCT, 12 );
+               println("Pressed    PAGE "+pageNumber);
+               println("");
+               press(page1, xpath.NEXT_PAGE);
                
+               pageNumber++;
                
-               pressItems(page1, xpath.PRODUCT, totalItemsPerPage);
-               
-               try
-               {
-                    println("Pressed    PAGE "+pageNumber);
-                    println("");
-                    press(page1, xpath.NEXT_PAGE);
-                    
-                    pageNumber++;
-                    
-               } catch (Exception e) {
-                    nextPageArrow = false;
-               }
-               
+          } catch (Exception e) {
+               nextPageArrow = false;
           }
           
      }
      
-     public static void pressItems(Page page2, String locator, int itemsPerPage)
+}
+
+public static void pressItems(Page page2, String locator, int itemsPerPage)
+{
+     var URL = page2.url();
+     int skipped = 0 ;
+     for ( int i = 1; i <= itemsPerPage; i++ )
      {
-          var URL = page2.url();
-          int skipped = 0 ;
-          for ( int i = 1; i <= itemsPerPage; i++ )
+          
+          int itemToPress = 0;
+          boolean flake = true;
+          int pagesReload = 0;
+          
+          
+          
+          //  BEFORE loop
+          if (!loadSingleElement(page2, locator + "[" + i + "]"))
+          {
+               println("Item [" + i + "] not found. Reloading.");
+               page2.navigate(URL);
+          }
+          if (!loadSingleElement(page2, locator + "[" + i + "]"))
           {
                
-               int itemToPress = 0;
-               boolean flake = true;
-               int pagesReload = 0;
-               
-               
-               
-               //  BEFORE loop
-               if (!loadSingleElement(page2, locator + "[" + i + "]"))
-               {
-                    println("Item [" + i + "] not found. Reloading.");
-                    page2.navigate(URL);
+               skipped++;
+               if(skipped >2) {
+                    break;
                }
-               if (!loadSingleElement(page2, locator + "[" + i + "]"))
-               {
-                    
-                    skipped++;
-                    if(skipped >2) {
-                         break;
-                    }
-                    println("Item [" + i + "] not found. Skipping.");
-                    continue; // skip to next item
-               }
-               while ( flake )
-               {
-                    boolean loadSingleItem = loadSingleElement(page2, locator+"["+i+"]");
-                    
-                    try
-                    {
-                         itemToPress++;
-                         if (itemToPress>1){
-                              println("      Attempt to Press "+itemToPress);
-                         }
-                         
-                         //println("");
-                         
-                         press(page2, locator+"["+i+"]");
-                         page2.goBack();
-                         flake = false;
-                         
-                         println("3rd loop item"+"["+i+"]");
-                    
-                    } catch (Exception e){
-                         //printScreen(page2);
-                         pagesReload++;
-                         println("      Loop "+ i +", items per page "+ itemsPerPage);
-                         
-                         
-                         if( !loadSingleItem ){
-                              flake = false;
-                         }
-                         
-                         println("     "+URL + " Page reload = " + pagesReload);
-                         println("");
-                         page2.navigate(URL);
-                         
-                         
-                    }
-               }
-               
-               
+               println("Item [" + i + "] not found. Skipping.");
+               continue; // skip to next item
           }
-              
+          while ( flake )
+          {
+               boolean loadSingleItem = loadSingleElement(page2, locator+"["+i+"]");
                
+               try
+               {
+                    itemToPress++;
+                    if (itemToPress>1){
+                         println("      Attempt to Press "+itemToPress);
+                    }
+                    
+                    //println("");
+                    
+                    press(page2, locator+"["+i+"]");
+                    page2.goBack();
+                    flake = false;
+                    
+                    println("3rd loop item"+"["+i+"]");
                
+               } catch (Exception e){
+                    //printScreen(page2);
+                    pagesReload++;
+                    println("      Loop "+ i +", items per page "+ itemsPerPage);
+                    
+                    
+                    if( !loadSingleItem ){
+                         flake = false;
+                    }
+                    
+                    println("     "+URL + " Page reload = " + pagesReload);
+                    println("");
+                    page2.navigate(URL);
+                    
+                    
+               }
+          }
+          
+          
      }
+     
+     
+          
+}
           
      
      
