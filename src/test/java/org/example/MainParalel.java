@@ -23,7 +23,7 @@ public class MainParalel {
      @TestFactory
      Stream<DynamicTest> run5TimesInParallel() {
           
-          return IntStream.range(0, 30)
+          return IntStream.range(0, 5)
                            .mapToObj(i -> DynamicTest.dynamicTest("Run-" + i, () -> {
                                 
                                 try (Playwright playwright = Playwright.create())
@@ -35,27 +35,20 @@ public class MainParalel {
                                      Page page = context.newPage();
                                      
                                      
-                                     for (var a =1; a <100; a++)
+                              
+                                     page.navigate(xpath.MAIN_PAGE);
+                                     
+                                     
+                                     for (int menu = 1; menu <= xpath.MENU_TOTAL; menu++)
                                      {
-                                          
-                                          page.navigate("https://careers.testdevlab.com/open-positions?levels=intern");
-                                          println(a);
-                                          
-                                          
+                                          String locator = xpath.TOP_MENU_ELEMENT + "[" + menu + "]";
+                                          press(page, locator);
+                                          println(locator);
+                                          loadSingleElement(page, xpath.NEXT_PAGE);
+                                          MainTest.nextPage(page);
                                      }
-                                     //page.navigate(xpath.MAIN_PAGE);
-                                     
-                                     
-//                                     for (int menu = 1; menu <= xpath.MENU_TOTAL; menu++)
-//                                     {
-//                                          String locator = xpath.TOP_MENU_ELEMENT + "[" + menu + "]";
-//                                          press(page, locator);
-//                                          println(locator);
-//                                          loadSingleElement(page, xpath.NEXT_PAGE);
-//                                          MainTest.nextPage(page);
-//                                     }
-//
-//                                     println("Finished Run: " + i);
+
+                                     println("Finished Run: " + i);
                                      
                                      browser.close();
                                 }
