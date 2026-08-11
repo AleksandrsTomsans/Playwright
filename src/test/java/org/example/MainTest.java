@@ -3,10 +3,8 @@ package org.example;
 import com.microsoft.playwright.*;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.RepeatedTest;
 import org.junit.jupiter.api.Test;
 
-import java.util.NoSuchElementException;
 
 import static org.example.JavaSoftware.println;
 
@@ -32,7 +30,7 @@ void setUp() {
 }
 
 @Test()
-void main() {
+void menu() {
      
      page.navigate(xpath.MAIN_PAGE);
      
