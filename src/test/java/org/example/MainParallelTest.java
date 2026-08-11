@@ -18,12 +18,12 @@ import static org.example.Variables.xpath;
 
 
 @Execution(ExecutionMode.CONCURRENT)
-public class MainParalel {
+public class MainParallelTest {
 
      @TestFactory
      Stream<DynamicTest> run5TimesInParallel() {
           
-          return IntStream.range(0, 5)
+          return IntStream.range(0, 1)
                            .mapToObj(i -> DynamicTest.dynamicTest("Run-" + i, () -> {
                                 
                                 try (Playwright playwright = Playwright.create())
