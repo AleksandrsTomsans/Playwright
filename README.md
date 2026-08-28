@@ -1,4 +1,4 @@
-# Playwright Java Automation Framework
+# Playwright Java 11 Automation Framework
 
 A Java UI automation project built with **Playwright**, **JUnit 5**, and **Gradle**.
 
