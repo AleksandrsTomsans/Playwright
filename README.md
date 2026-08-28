@@ -447,7 +447,7 @@ Used to experiment with parallel Playwright execution and compare it with the se
 
 ## Learning Goals
 
-This project is intended as a practical training framework for understanding:
+This project is intended as training framework for understanding:
 
 ```text
 Java
