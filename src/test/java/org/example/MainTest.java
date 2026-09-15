@@ -35,6 +35,8 @@ void menu() {
      
      page.navigate(xpath.MAIN_PAGE);
      
+     
+// Loop over TOP MENU
      for (int menu = 1; menu <= MENU_TOTAL; menu++)
      {
           String menuElement = xpath.TOP_MENU_ELEMENT + "[" + menu + "]";
@@ -43,7 +45,7 @@ void menu() {
           press(page, menuElement);
           println(page.url() + " " + menuElement);
           
-          nextPage(page);
+          nextPage(page); // Loop OVER button "->" next page
      }
      
      page.waitForTimeout(1000);
@@ -58,7 +60,30 @@ void tearDown() {
      browser.close();
      playwright.close();
 }
-     
+
+
+
+
+/**
+ * Loops over the "->" Next Page button to process all available pages.
+ *
+ * <p>
+ * The method:
+ * <ul>
+ *     <li>Starts from page 1</li>
+ *     <li>Counts the items available on the current page</li>
+ *     <li>Processes all items using {@code pressItems()}</li>
+ *     <li>Attempts to click the "->" Next Page button</li>
+ *     <li>Increases the page number after successfully moving to the next page</li>
+ *     <li>Continues until the Next Page button is no longer available</li>
+ *     <li>Stops the loop when the next-page action throws an exception</li>
+ * </ul>
+ *
+ * <p>
+ * This allows the test to process an unknown number of pagination pages
+ * without requiring a predefined number of pages.
+ */
+
 public static void nextPage (Page page1)
 {
      int pageNumber = 1;
@@ -70,7 +95,7 @@ public static void nextPage (Page page1)
           var totalItemsPerPage = elementsSumAndReloadIfMore(page1, "xpath="+xpath.PRODUCT, 12 );
           
           
-          pressItems(page1, xpath.PRODUCT, totalItemsPerPage);
+          pressItems(page1, xpath.PRODUCT, totalItemsPerPage); // Loop over each item per page
           
           try
           {
@@ -88,6 +113,25 @@ public static void nextPage (Page page1)
      
 }
 
+
+
+
+
+/**
+ * Loops over each item on the current page and processes the items individually.
+ *
+ * @param page2        Playwright Page used to interact with the current browser page.
+ * @param locator      XPath locator used to find the items on the page.
+ * @param itemsPerPage Maximum expected number of items on the page.
+ *                     If more items are loaded than this value, the page is reloaded
+ *                     until the number of loaded items is the same as or less than
+ *                     the specified maximum.
+ *
+ * <p>
+ * The method also checks whether each item is available, retries missing items,
+ * reloads the page when necessary, and continues with the next item when an
+ * item cannot be found.
+ */
 public static void pressItems(Page page2, String locator, int itemsPerPage)
 {
      var URL = page2.url();
@@ -131,7 +175,9 @@ public static void pressItems(Page page2, String locator, int itemsPerPage)
                     //println("");
                     
                     press(page2, locator+"["+i+"]");
-                    itemPage();
+                    
+                    itemPage(); // Framework for pressed item
+                    
                     page2.goBack();
                     flake = false;
                     

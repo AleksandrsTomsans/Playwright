@@ -23,7 +23,7 @@ public class MainParallelTest {
      @TestFactory
      Stream<DynamicTest> run5TimesInParallel() {
           
-          return IntStream.range(0, 1)
+          return IntStream.range(0, 5)
                            .mapToObj(i -> DynamicTest.dynamicTest("Run-" + i, () -> {
                                 
                                 try (Playwright playwright = Playwright.create())

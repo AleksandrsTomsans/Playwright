@@ -13,7 +13,7 @@ import java.nio.file.Paths;
 public class Software {
 
 public static void printScreen(Page page){
-          var URL = page.title();
+          var URL = page.url();
      try{
           
           page.screenshot(new Page.ScreenshotOptions()
